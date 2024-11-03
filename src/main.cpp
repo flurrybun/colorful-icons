@@ -6,7 +6,7 @@
 bool ModSimplePlayer::init(int p0) {
     if (!SimplePlayer::init(p0)) return false;
 
-    queueInMainThread([=] {
+    queueInMainThread([this] {
         auto parent = getParent();
 
         if (!parent) return;
