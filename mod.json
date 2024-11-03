@@ -1,0 +1,26 @@
+{
+    "geode": "3.9.0",
+    "gd": {
+        "win": "2.206",
+        "android": "2.206",
+        "mac": "2.206",
+        "ios": "2.206"
+    },
+    "id": "ninkaz.colorful-icons",
+    "name": "Colorful Icons",
+    "version": "v1.0.0",
+    "developers": ["NinKaz", "sofabeddd"],
+    "description": "Make all icons use your player colors",
+    "tags": ["customization", "interface", "offline"],
+    "links": {
+        "source": "https://github.com/flurrybun/colorful-icons"
+    },
+    "settings": {
+        "hide-locks": {
+            "name": "Hide Locks",
+            "description": "Hide lock icons in the icon kit.",
+            "type": "bool",
+            "default": true
+        }
+    }
+}
