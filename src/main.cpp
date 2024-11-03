@@ -6,18 +6,19 @@
 bool ModSimplePlayer::init(int p0) {
     if (!SimplePlayer::init(p0)) return false;
 
+    retain();
+
     queueInMainThread([this] {
         // it's possible for this node's ref count to be 0 when navigating away from a menu before it loads
         // if that happens, calling getParent() will crash
-        // we could call retain/release, but if the node is about to be destroyed, changing its color is pointless
-
-        if (retainCount() == 0) return;
+        // originally i just checked if the ref count was 0, but that would still crash every now and then
 
         auto parent = getParent();
-        if (!parent) return;
-        if (!typeinfo_cast<GJItemIcon*>(parent)) return;
+        if (parent && typeinfo_cast<GJItemIcon*>(parent)) {
+            if (!m_fields->m_isLocked) changeToPlayerColors();
+        }
 
-        if (!m_fields->m_isLocked) changeToPlayerColors();
+        release();
     });
 
     return true;
