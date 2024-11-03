@@ -66,13 +66,13 @@ CCSprite* ModSimplePlayer::renderIcon() {
             child->setVisible(true);
         }
 
-        robotSpiderSprite->m_extraSprite->setVisible(true);
+        robotSpiderSprite->m_extraSprite->setVisible(m_fields->m_hasDetailSprite);
         robotSpiderSprite->m_extraSprite->setColor({110, 110, 110});
     }
 
     CCSize iconSize = spriteToRender->getContentSize();
     if (isUFO) iconSize = CCSize(iconSize.width, iconSize.height + 40);
-    if (isRobot || isSpider) iconSize = CCSize(60, 40);
+    if (isRobot || isSpider) iconSize = CCSize(60, 55);
 
     setPosition(ccp(15, 15) - iconSize / 2);
     spriteToRender->setPosition(iconSize / 2);
@@ -111,8 +111,11 @@ void ModGJItemIcon::changeToLockedState(float p0) {
         // since GJItemIcon::changeToLockedState sets the detail sprite and ufo dome to invisible regardless,
         // we need to store their visibility before calling the original method
 
-        modPlayer->m_fields->m_hasDetailSprite = m_player->m_detailSprite->isVisible();
         modPlayer->m_fields->m_hasUFODome = m_player->m_birdDome->isVisible();
+
+        if (modPlayer->m_robotSprite) modPlayer->m_fields->m_hasDetailSprite = m_player->m_robotSprite->m_extraSprite->isVisible();
+        else if (modPlayer->m_spiderSprite) modPlayer->m_fields->m_hasDetailSprite = m_player->m_spiderSprite->m_extraSprite->isVisible();
+        else modPlayer->m_fields->m_hasDetailSprite = m_player->m_detailSprite->isVisible();
     }
 
     GJItemIcon::changeToLockedState(p0);
