@@ -7,8 +7,13 @@ bool ModSimplePlayer::init(int p0) {
     if (!SimplePlayer::init(p0)) return false;
 
     queueInMainThread([this] {
-        auto parent = getParent();
+        // it's possible for this node's ref count to be 0 when navigating away from a menu before it loads
+        // if that happens, calling getParent() will crash
+        // we could call retain/release, but if the node is about to be destroyed, changing its color is pointless
 
+        if (retainCount() == 0) return;
+
+        auto parent = getParent();
         if (!parent) return;
         if (!typeinfo_cast<GJItemIcon*>(parent)) return;
 
@@ -135,6 +140,8 @@ void ModGJItemIcon::changeToLockedState(float p0) {
 
 void ModGJGarageLayer::playerColorChanged() {
     GJGarageLayer::playerColorChanged();
+
+    // most of these null checks are almost certainly unnecessary, but better safe than sorry
 
     auto page = typeinfo_cast<ListButtonPage*>(m_iconSelection->m_pages->firstObject());
     if (!page) return;
