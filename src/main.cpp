@@ -76,7 +76,7 @@ CCSprite* ModSimplePlayer::renderIcon() {
         robotSpiderSprite->m_extraSprite->setColor({110, 110, 110});
     }
 
-    CCSize iconSize = spriteToRender->getContentSize();
+    CCSize iconSize = spriteToRender->getContentSize() + CCSize(10, 10);
     if (isUFO) iconSize = CCSize(iconSize.width, iconSize.height + 40);
     if (isRobot || isSpider) iconSize = CCSize(60, 55);
 
