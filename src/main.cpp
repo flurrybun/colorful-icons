@@ -41,10 +41,13 @@ void ModSimplePlayer::changeToPlayerColors() {
     else disableGlowOutline();
 }
 
-CCSprite* ModSimplePlayer::renderIcon() {
+CCSprite* ModSimplePlayer::renderIcon(bool isUnobtainable) {
+    if (!Mod::get()->getSettingValue<bool>("dim-unobtainable")) isUnobtainable = false;
+
     setOpacity(255);
     m_secondLayer->setVisible(true);
     setColors({41, 41, 41}, {80, 80, 80});
+    if (isUnobtainable) setColors({1, 1, 1}, {1, 1, 1});
 
     bool hasDetailSprite = m_fields->m_hasDetailSprite;
     bool isUFO = m_fields->m_hasUFODome;
@@ -53,9 +56,11 @@ CCSprite* ModSimplePlayer::renderIcon() {
 
     m_detailSprite->setVisible(hasDetailSprite);
     m_detailSprite->setColor({110, 110, 110});
+    if (isUnobtainable) m_detailSprite->setColor({1, 1, 1});
 
     m_birdDome->setVisible(isUFO);
     m_birdDome->setColor({110, 110, 110});
+    if (isUnobtainable) m_birdDome->setColor({1, 1, 1});
 
     CCSprite* spriteToRender = m_firstLayer;
     GJRobotSprite* robotSpiderSprite = nullptr;
@@ -74,6 +79,7 @@ CCSprite* ModSimplePlayer::renderIcon() {
 
         robotSpiderSprite->m_extraSprite->setVisible(m_fields->m_hasDetailSprite);
         robotSpiderSprite->m_extraSprite->setColor({110, 110, 110});
+        if (isUnobtainable) robotSpiderSprite->m_extraSprite->setColor({13, 13, 13});
     }
 
     CCSize iconSize = spriteToRender->getContentSize() + CCSize(10, 10);
@@ -101,6 +107,7 @@ CCSprite* ModSimplePlayer::renderIcon() {
     renderedSprite->setFlipY(true);
     renderedSprite->setPosition({15, 15});
     renderedSprite->setOpacity(120);
+    if (isUnobtainable) renderedSprite->setOpacity(30);
 
     if (isUFO) renderedSprite->setPositionY(8);
 
@@ -126,6 +133,9 @@ void ModGJItemIcon::changeToLockedState(float p0) {
 
     GJItemIcon::changeToLockedState(p0);
 
+    // unlock state is 0 when the icon is unobtainable until 2.21
+    bool isUnobtainable = GameStatsManager::get()->getItemUnlockState(m_unlockID, m_unlockType) == 0;
+
     if (Mod::get()->getSettingValue<bool>("hide-locks")) {
         if (auto lock = getChildByType<CCSprite>(1)) lock->setVisible(false);
         
@@ -133,7 +143,7 @@ void ModGJItemIcon::changeToLockedState(float p0) {
             auto modPlayer = static_cast<ModSimplePlayer*>(player);
             modPlayer->m_fields->m_isLocked = true;
 
-            addChild(modPlayer->renderIcon());
+            addChild(modPlayer->renderIcon(isUnobtainable));
             player->setVisible(false);
         }
     }

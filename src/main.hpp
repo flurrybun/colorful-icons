@@ -14,7 +14,7 @@ class $modify(ModSimplePlayer, SimplePlayer) {
     $override
     bool init(int);
 
-    CCSprite* renderIcon();
+    CCSprite* renderIcon(bool);
     void changeToPlayerColors();
 };
 

@@ -21,6 +21,12 @@
             "description": "Hide lock icons in the icon kit.",
             "type": "bool",
             "default": true
+        },
+        "dim-unobtainable": {
+            "name": "Dim Unobtainable Icons",
+            "description": "Dim icons marked as unobtainable until 2.21. Will still show unreleased gaunlet icons.",
+            "type": "bool",
+            "default": true
         }
     }
 }
