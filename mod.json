@@ -24,7 +24,7 @@
         },
         "dim-unobtainable": {
             "name": "Dim Unobtainable Icons",
-            "description": "Dim icons marked as unobtainable until 2.21. Will still show unreleased gaunlet icons.",
+            "description": "Dim icons marked as unobtainable until 2.21. Doesn't apply to icons from unreleased gauntlets.",
             "type": "bool",
             "default": true
         }
