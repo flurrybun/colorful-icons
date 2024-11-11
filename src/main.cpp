@@ -1,4 +1,7 @@
 #include "main.hpp"
+#include "color.hpp"
+#include <random>
+#include <Geode/Geode.hpp>
 
 // GJItemIcon::create is inlined and hooking GJItemIcon::init crashes even when doing nothing
 // not ideal but we can work around it
@@ -14,8 +17,9 @@ bool ModSimplePlayer::init(int p0) {
         // originally i just checked if the ref count was 0, but that would still crash every now and then
 
         auto parent = getParent();
-        if (parent && typeinfo_cast<GJItemIcon*>(parent)) {
-            if (!m_fields->m_isLocked) changeToPlayerColors();
+        if (parent && typeinfo_cast<GJItemIcon*>(parent) && !m_fields->m_isLocked) {
+            if (!isAprilFools()) changeToPlayerColors();
+            else makeRainbow();
         }
 
         release();
@@ -39,6 +43,78 @@ void ModSimplePlayer::changeToPlayerColors() {
     setColors(primary, secondary);
     if (hasGlow) setGlowOutline(glow);
     else disableGlowOutline();
+}
+
+void ModSimplePlayer::makeRainbow() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distr(0, 360);
+
+    ccColor3B primary = color::hsv2rgb({static_cast<float>(distr(gen)), 1, 1});
+    ccColor3B secondary = color::hsv2rgb({static_cast<float>(distr(gen)), 1, 1});
+    ccColor3B glow = color::hsv2rgb({static_cast<float>(distr(gen)), 1, 1});
+    m_fields->m_rainbowPrimary = primary;
+    m_fields->m_rainbowSecondary = secondary;
+    m_fields->m_rainbowGlow = glow;
+
+    setColors(primary, secondary);
+    setGlowOutline(glow);
+
+    m_firstLayer->runAction(CCRepeatForever::create(CCSequence::create(
+        CCCallFunc::create(this, callfunc_selector(ModSimplePlayer::tintPlayerSprites)),
+        CCDelayTime::create(0.3f),
+        nullptr
+    )));
+
+    if (m_robotSprite || m_spiderSprite) schedule(schedule_selector(ModSimplePlayer::updateRobotSprite));
+}
+
+void ModSimplePlayer::tintPlayerSprites() {
+    tintToRandomColor(ColorType::Primary, 0.3f);
+    tintToRandomColor(ColorType::Secondary, 0.3f);
+    tintToRandomColor(ColorType::Glow, 0.3f);
+}
+
+void ModSimplePlayer::tintToRandomColor(ColorType colorType, float duration) {
+    CCSprite* sprite;
+    ccColor3B baseColor;
+
+    if (colorType == ColorType::Primary) {
+        sprite = m_firstLayer;
+        baseColor = m_fields->m_rainbowPrimary;
+    } else if (colorType == ColorType::Secondary) {
+        sprite = m_secondLayer;
+        baseColor = m_fields->m_rainbowSecondary;
+    } else {
+        sprite = m_outlineSprite;
+        baseColor = m_fields->m_rainbowGlow;
+    }
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distr(-30, 30);
+
+    ccHSVValue hsv = color::rgb2hsv(baseColor);
+    hsv.h += distr(gen);
+    hsv.s = 1;
+    hsv.v = 1;
+    ccColor3B color = color::hsv2rgb(hsv);
+
+    sprite->runAction(CCTintTo::create(duration, color.r, color.g, color.b));
+
+    if (colorType == ColorType::Primary) m_fields->m_rainbowPrimary = color;
+    else if (colorType == ColorType::Secondary) m_fields->m_rainbowSecondary = color;
+    else m_fields->m_rainbowGlow = color;
+}
+
+void ModSimplePlayer::updateRobotSprite(float dt) {
+    GJRobotSprite* robotSprite = m_robotSprite ? m_robotSprite : m_spiderSprite;
+    ccColor3B primary = m_firstLayer->getColor();
+    ccColor3B secondary = m_secondLayer->getColor();
+    ccColor3B glow = m_outlineSprite->getColor();
+
+    setColors(primary, secondary);
+    setGlowOutline(glow);
 }
 
 CCSprite* ModSimplePlayer::renderIcon(bool isUnobtainable) {
@@ -171,4 +247,11 @@ void ModGJGarageLayer::playerColorChanged() {
 
         static_cast<ModSimplePlayer*>(player)->changeToPlayerColors();
     }
+}
+
+bool isAprilFools() {
+    time_t now = time(nullptr);
+    tm* time = localtime(&now);
+
+    return time->tm_mon == 3 && time->tm_mday == 1;
 }
