@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Bump to Geode 4.0.0 and 2.2074
+
 ## 1.0.2
 
 - Dim icons that are unobtainable until 2.21 (can be changed in settings).
