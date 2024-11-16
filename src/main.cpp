@@ -252,12 +252,7 @@ void ModGJGarageLayer::playerColorChanged() {
 
 bool isAprilFools() {
     time_t now = time(nullptr);
-    tm timeInfo;
-#ifdef GEODE_WINDOWS
-    localtime_s(&timeInfo, &now);
-#else
-    localtime_r(&now, &timeInfo);
-#endif
+    tm* time = localtime(&now);
 
-    return timeInfo.tm_mon == 3 && timeInfo.tm_mday == 1;
+    return time->tm_mon == 3 && time->tm_mday == 1;
 }
