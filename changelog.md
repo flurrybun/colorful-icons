@@ -1,6 +1,7 @@
 ## 1.0.3
 
 - Bump to Geode 4.0.0 and 2.2074
+- Fix chest reward icons not being colored
 
 ## 1.0.2
 

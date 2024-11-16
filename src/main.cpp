@@ -30,7 +30,8 @@ bool ModSimplePlayer::init(int p0) {
 
 void ModSimplePlayer::changeToPlayerColors() {
     if (auto spr = getChildByType<CCSprite>(0)) {
-        if (spr->getOpacity() != 255) return;
+        // if an icon is locked, its opacity is set to 120
+        if (spr->getOpacity() == 120) return;
     }
 
     auto gm = GameManager::get();
@@ -214,7 +215,7 @@ void ModGJItemIcon::changeToLockedState(float p0) {
 
     if (Mod::get()->getSettingValue<bool>("hide-locks")) {
         if (auto lock = getChildByType<CCSprite>(1)) lock->setVisible(false);
-        
+
         if (auto player = typeinfo_cast<SimplePlayer*>(m_player)) {
             auto modPlayer = static_cast<ModSimplePlayer*>(player);
             modPlayer->m_fields->m_isLocked = true;
@@ -251,7 +252,8 @@ void ModGJGarageLayer::playerColorChanged() {
 
 bool isAprilFools() {
     time_t now = time(nullptr);
-    tm* time = localtime(&now);
+    tm timeInfo;
+    localtime_s(&timeInfo, &now);
 
-    return time->tm_mon == 3 && time->tm_mday == 1;
+    return timeInfo.tm_mon == 3 && timeInfo.tm_mday == 1;
 }
