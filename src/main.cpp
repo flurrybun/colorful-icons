@@ -36,6 +36,8 @@ void ModSimplePlayer::changeToPlayerColors() {
 
     auto gm = GameManager::get();
 
+    if (tryChangeSeparateDualIconsColor()) return;
+
     ccColor3B primary = gm->colorForIdx(gm->getPlayerColor());
     ccColor3B secondary = gm->colorForIdx(gm->getPlayerColor2());
     ccColor3B glow = gm->colorForIdx(gm->getPlayerGlowColor());
@@ -44,6 +46,31 @@ void ModSimplePlayer::changeToPlayerColors() {
     setColors(primary, secondary);
     if (hasGlow) setGlowOutline(glow);
     else disableGlowOutline();
+}
+
+bool ModSimplePlayer::tryChangeSeparateDualIconsColor() {
+    auto scene = CCDirector::sharedDirector()->getRunningScene();
+    if (!scene) return false;
+
+    auto garageLayer = scene->getChildByType<GJGarageLayer>(0);
+    if (!garageLayer) return false;
+
+    bool isP2Selected = static_cast<ModGJGarageLayer*>(garageLayer)->m_fields->m_isP2Selected;
+    if (!isP2Selected) return false;
+
+    auto gm = GameManager::get();
+    auto mod = Loader::get()->getLoadedMod("weebify.separate_dual_icons");
+
+    ccColor3B primary = gm->colorForIdx(mod->getSavedValue<int64_t>("color1"));
+    ccColor3B secondary = gm->colorForIdx(mod->getSavedValue<int64_t>("color2"));
+    ccColor3B glow = gm->colorForIdx(mod->getSavedValue<int64_t>("colorglow"));
+    bool hasGlow = mod->getSavedValue<bool>("glow");
+
+    setColors(primary, secondary);
+    if (hasGlow) setGlowOutline(glow);
+    else disableGlowOutline();
+
+    return true;
 }
 
 void ModSimplePlayer::makeRainbow() {
@@ -248,6 +275,27 @@ void ModGJGarageLayer::playerColorChanged() {
 
         static_cast<ModSimplePlayer*>(player)->changeToPlayerColors();
     }
+}
+
+bool ModGJGarageLayer::init() {
+    if (!GJGarageLayer::init()) return false;
+
+    if (Loader::get()->isModLoaded("weebify.separate_dual_icons")) {
+        schedule(schedule_selector(ModGJGarageLayer::updateSeparateDualIcons));
+    }
+
+    return true;
+}
+
+void ModGJGarageLayer::updateSeparateDualIcons(float dt) {
+    auto mod = Loader::get()->getLoadedMod("weebify.separate_dual_icons");
+    auto isP2Selected = mod->getSavedValue<bool>("2pselected");
+
+    // only continue if the value has changed
+    if (m_fields->m_isP2Selected == isP2Selected) return;
+    m_fields->m_isP2Selected = isP2Selected;
+
+    playerColorChanged();
 }
 
 bool isAprilFools() {

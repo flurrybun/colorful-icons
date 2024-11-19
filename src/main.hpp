@@ -21,10 +21,10 @@ class $modify(ModSimplePlayer, SimplePlayer) {
         Primary, Secondary, Glow
     };
     
-    $override
-    bool init(int);
+    $override bool init(int);
 
     void changeToPlayerColors();
+    bool tryChangeSeparateDualIconsColor();
     void makeRainbow();
     void tintPlayerSprites();
     void tintToRandomColor(ColorType, float);
@@ -37,8 +37,13 @@ class $modify(ModGJItemIcon, GJItemIcon) {
 };
 
 class $modify(ModGJGarageLayer, GJGarageLayer) {
-    $override
-    virtual void playerColorChanged();
+    struct Fields {
+        bool m_isP2Selected = false; // for separate dual icons compat
+    };
+    
+    $override virtual void playerColorChanged();
+    $override virtual bool init();
+    void updateSeparateDualIcons(float);
 };
 
 bool isAprilFools();
