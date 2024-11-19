@@ -1,6 +1,6 @@
 ## 1.0.4
 
-- Added support for the different dual icons in [separate dual icons](https://geode-sdk.org/mods/weebify.separate_dual_icons)
+- Improve compatibility with [separate dual icons](https://geode-sdk.org/mods/weebify.separate_dual_icons) so icons are colored to match the selected icon
 
 ## 1.0.3
 
