@@ -1,3 +1,7 @@
+## 1.0.4
+
+- Added support for the different dual icons in [separate dual icons](https://geode-sdk.org/mods/weebify.separate_dual_icons)
+
 ## 1.0.3
 
 - Bumped to Geode 4.0.0 and 2.2074
