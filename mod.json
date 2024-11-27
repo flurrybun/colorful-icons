@@ -1,5 +1,5 @@
 {
-    "geode": "4.0.0-beta.1",
+    "geode": "4.0.1",
     "gd": {
         "win": "2.2074",
         "android": "2.2074",
@@ -8,7 +8,7 @@
     },
     "id": "ninkaz.colorful-icons",
     "name": "Colorful Icons",
-    "version": "v1.0.4",
+    "version": "v1.0.5",
     "developers": ["NinKaz", "sofabeddd"],
     "description": "Make all icons use your player colors",
     "tags": ["customization", "interface", "offline"],
@@ -24,7 +24,7 @@
         },
         "dim-unobtainable": {
             "name": "Dim Unobtainable Icons",
-            "description": "Dim icons not unobtainable until 2.21. Doesn't apply to icons from unavaiable gauntlets and Wraith codes.",
+            "description": "Dim icons that are currently unobtainable (can be unlocked in 2.21). Doesn't apply to icons from unavailable gauntlets and Wraith codes.",
             "type": "bool",
             "default": true,
             "enable-if": "hide-locks"

@@ -270,8 +270,9 @@ void ModGJGarageLayer::playerColorChanged() {
         auto itemIcon = iconBtn->getChildByType<GJItemIcon>(0);
         if (!itemIcon) continue;
 
+        // m_player may be a CCSprite*, e.g. trail icons
         auto player = itemIcon->m_player;
-        if (!player) continue;
+        if (!player || !typeinfo_cast<SimplePlayer*>(itemIcon->m_player)) continue;
 
         static_cast<ModSimplePlayer*>(player)->changeToPlayerColors();
     }

@@ -1,6 +1,10 @@
+## 1.0.5
+
+- Fix crash with [separate dual icons](mod:weebify.separate_dual_icons) when swapping players on the trail page.
+
 ## 1.0.4
 
-- Improve compatibility with [separate dual icons](https://geode-sdk.org/mods/weebify.separate_dual_icons) so icons are colored to match the selected icon
+- Improve compatibility with [separate dual icons](mod:weebify.separate_dual_icons) so icons are colored to match the selected icon
 
 ## 1.0.3
 
