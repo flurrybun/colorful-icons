@@ -2,4 +2,6 @@ Change all icons (icon kit, shops, achievements, etc.) to use your <cg>player co
 
 Locked icons also show more detail.
 
-Mod idea heavily based on [Colored Icon Kit](https://github.com/sofabeddd/Colored-Icon-Kit) by sofabeddd.
+---
+
+You may recognize this mod as [Colored Icon Kit](https://github.com/sofabeddd/Colored-Icon-Kit) by sofabeddd, which hasn't been on the index since 2.206 released.
