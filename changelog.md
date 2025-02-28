@@ -1,10 +1,14 @@
+## 1.0.6
+
+- Fixed some locked ships clipping on the left & right edges
+
 ## 1.0.5
 
-- Fix crash with [separate dual icons](mod:weebify.separate_dual_icons) when swapping players on the trail page.
+- Fixed crash with [separate dual icons](mod:weebify.separate_dual_icons) when swapping players on the trail page
 
 ## 1.0.4
 
-- Improve compatibility with [separate dual icons](mod:weebify.separate_dual_icons) so icons are colored to match the selected icon
+- Improved compatibility with [separate dual icons](mod:weebify.separate_dual_icons) so icons are colored to match the selected icon
 
 ## 1.0.3
 

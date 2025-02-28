@@ -1,6 +1,6 @@
 Change all icons (icon kit, shops, achievements, etc.) to use your <cg>player colors</c> instead of the default gray.
 
-Locked icons also show more detail.
+Locked icons also show more detail, with currently unobtainable icons being dimmed.
 
 ---
 
