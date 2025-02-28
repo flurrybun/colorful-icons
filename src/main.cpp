@@ -228,11 +228,11 @@ void ModGJItemIcon::changeToLockedState(float p0) {
         // since GJItemIcon::changeToLockedState sets the detail sprite and ufo dome to invisible regardless,
         // we need to store their visibility before calling the original method
 
-        modPlayer->m_fields->m_hasUFODome = m_player->m_birdDome->isVisible();
+        modPlayer->m_fields->m_hasUFODome = player->m_birdDome->isVisible();
 
-        if (modPlayer->m_robotSprite) modPlayer->m_fields->m_hasDetailSprite = m_player->m_robotSprite->m_extraSprite->isVisible();
-        else if (modPlayer->m_spiderSprite) modPlayer->m_fields->m_hasDetailSprite = m_player->m_spiderSprite->m_extraSprite->isVisible();
-        else modPlayer->m_fields->m_hasDetailSprite = m_player->m_detailSprite->isVisible();
+        if (modPlayer->m_robotSprite) modPlayer->m_fields->m_hasDetailSprite = player->m_robotSprite->m_extraSprite->isVisible();
+        else if (modPlayer->m_spiderSprite) modPlayer->m_fields->m_hasDetailSprite = player->m_spiderSprite->m_extraSprite->isVisible();
+        else modPlayer->m_fields->m_hasDetailSprite = player->m_detailSprite->isVisible();
     }
 
     GJItemIcon::changeToLockedState(p0);
