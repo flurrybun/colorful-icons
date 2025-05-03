@@ -1,3 +1,7 @@
+## 1.0.7
+
+- iOS support
+
 ## 1.0.6
 
 - Fixed some locked ships clipping on the left & right edges
