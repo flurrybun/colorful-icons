@@ -4,4 +4,4 @@ Locked icons also show more detail, with currently unobtainable icons being dimm
 
 ---
 
-You may recognize this mod as [Colored Icon Kit](https://github.com/sofabeddd/Colored-Icon-Kit) by sofabeddd, which hasn't been on the index since 2.206 released.
+You may recognize this mod as [Colored Icon Kit](https://github.com/sofabeddd/Colored-Icon-Kit) by sofabeddd, which was never updated past 2.204.
