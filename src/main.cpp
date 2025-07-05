@@ -3,29 +3,57 @@
 #include <random>
 #include <Geode/Geode.hpp>
 
-// GJItemIcon::create is inlined and hooking GJItemIcon::init crashes even when doing nothing
-// not ideal but we can work around it
+// trying to access the last parameter of GJItemIcon::init in any way crashes the game
+// genuinely how the fuck does that even happen
 
-bool ModSimplePlayer::init(int p0) {
-    if (!SimplePlayer::init(p0)) return false;
+bool ModGJItemIcon::init(
+    UnlockType unlockType, int itemID, cocos2d::ccColor3B primaryColor, cocos2d::ccColor3B secondaryColor,
+    bool b1, bool b2, bool b3, cocos2d::ccColor3B _
+) {
+    if (!GJItemIcon::init(unlockType, itemID, primaryColor, secondaryColor, b1, b2, b3, {})) return false;
 
-    retain();
+    if (auto player = typeinfo_cast<SimplePlayer*>(m_player)) {
+        auto modPlayer = static_cast<ModSimplePlayer*>(player);
 
-    queueInMainThread([this] {
-        // it's possible for this node's ref count to be 0 when navigating away from a menu before it loads
-        // if that happens, calling getParent() will crash
-        // originally i just checked if the ref count was 0, but that would still crash every now and then
-
-        auto parent = getParent();
-        if (parent && typeinfo_cast<GJItemIcon*>(parent) && !m_fields->m_isLocked) {
-            if (!isAprilFools()) changeToPlayerColors();
-            else makeRainbow();
-        }
-
-        release();
-    });
+        if (!isAprilFools()) modPlayer->changeToPlayerColors();
+        else modPlayer->makeRainbow();
+    }
 
     return true;
+}
+
+void ModGJItemIcon::changeToLockedState(float p0) {
+    if (auto player = typeinfo_cast<SimplePlayer*>(m_player)) {
+        auto modPlayer = static_cast<ModSimplePlayer*>(player);
+
+        // if an icon doesn't have a detail sprite or ufo dome, it defaults to the default cube's inner square set to invisible
+        // since GJItemIcon::changeToLockedState sets the detail sprite and ufo dome to invisible regardless,
+        // we need to store their visibility before calling the original method
+
+        modPlayer->m_fields->m_hasUFODome = player->m_birdDome->isVisible();
+
+        if (modPlayer->m_robotSprite) {
+            modPlayer->m_fields->m_hasDetailSprite = player->m_robotSprite->m_extraSprite->isVisible();
+        } else if (modPlayer->m_spiderSprite) {
+            modPlayer->m_fields->m_hasDetailSprite = player->m_spiderSprite->m_extraSprite->isVisible();
+        } else {
+            modPlayer->m_fields->m_hasDetailSprite = player->m_detailSprite->isVisible();
+        }
+    }
+
+    GJItemIcon::changeToLockedState(p0);
+
+    // unlock state is 0 when the icon is unobtainable until 2.21
+    bool isUnobtainable = GameStatsManager::get()->getItemUnlockState(m_unlockID, m_unlockType) == 0;
+
+    if (Mod::get()->getSettingValue<bool>("hide-locks")) {
+        if (auto lock = getChildByType<CCSprite>(1)) lock->setVisible(false);
+
+        if (auto player = typeinfo_cast<SimplePlayer*>(m_player)) {
+            addChild(static_cast<ModSimplePlayer*>(player)->renderIcon(isUnobtainable));
+            player->setVisible(false);
+        }
+    }
 }
 
 void ModSimplePlayer::changeToPlayerColors() {
@@ -216,41 +244,6 @@ CCSprite* ModSimplePlayer::renderIcon(bool isUnobtainable) {
     if (isUFO) renderedSprite->setPositionY(8);
 
     return renderedSprite;
-}
-
-void ModGJItemIcon::changeToLockedState(float p0) {
-    // we can't assume that m_player is a SimplePlayer, because locked path icons set m_player to a CCSprite
-
-    if (auto player = typeinfo_cast<SimplePlayer*>(m_player)) {
-        auto modPlayer = static_cast<ModSimplePlayer*>(player);
-
-        // if an icon doesn't have a detail sprite or ufo dome, it defaults to the default cube's inner square set to invisible
-        // since GJItemIcon::changeToLockedState sets the detail sprite and ufo dome to invisible regardless,
-        // we need to store their visibility before calling the original method
-
-        modPlayer->m_fields->m_hasUFODome = player->m_birdDome->isVisible();
-
-        if (modPlayer->m_robotSprite) modPlayer->m_fields->m_hasDetailSprite = player->m_robotSprite->m_extraSprite->isVisible();
-        else if (modPlayer->m_spiderSprite) modPlayer->m_fields->m_hasDetailSprite = player->m_spiderSprite->m_extraSprite->isVisible();
-        else modPlayer->m_fields->m_hasDetailSprite = player->m_detailSprite->isVisible();
-    }
-
-    GJItemIcon::changeToLockedState(p0);
-
-    // unlock state is 0 when the icon is unobtainable until 2.21
-    bool isUnobtainable = GameStatsManager::get()->getItemUnlockState(m_unlockID, m_unlockType) == 0;
-
-    if (Mod::get()->getSettingValue<bool>("hide-locks")) {
-        if (auto lock = getChildByType<CCSprite>(1)) lock->setVisible(false);
-
-        if (auto player = typeinfo_cast<SimplePlayer*>(m_player)) {
-            auto modPlayer = static_cast<ModSimplePlayer*>(player);
-            modPlayer->m_fields->m_isLocked = true;
-
-            addChild(modPlayer->renderIcon(isUnobtainable));
-            player->setVisible(false);
-        }
-    }
 }
 
 void ModGJGarageLayer::playerColorChanged() {

@@ -1,14 +1,18 @@
 #pragma once
 
-#include <Geode/modify/SimplePlayer.hpp>
 #include <Geode/modify/GJItemIcon.hpp>
+#include <Geode/modify/SimplePlayer.hpp>
 #include <Geode/modify/GJGarageLayer.hpp>
 #include <Geode/Geode.hpp>
 using namespace geode::prelude;
 
+class $modify(ModGJItemIcon, GJItemIcon) {
+    $override bool init(UnlockType, int, ccColor3B, ccColor3B, bool, bool, bool, ccColor3B);
+    $override void changeToLockedState(float);
+};
+
 class $modify(ModSimplePlayer, SimplePlayer) {
     struct Fields {
-        bool m_isLocked = false;
         bool m_hasDetailSprite;
         bool m_hasUFODome;
 
@@ -20,8 +24,6 @@ class $modify(ModSimplePlayer, SimplePlayer) {
     enum ColorType {
         Primary, Secondary, Glow
     };
-    
-    $override bool init(int);
 
     void changeToPlayerColors();
     bool tryChangeSeparateDualIconsColor();
@@ -30,10 +32,6 @@ class $modify(ModSimplePlayer, SimplePlayer) {
     void tintToRandomColor(ColorType, float);
     void updateRobotSprite(float);
     CCSprite* renderIcon(bool);
-};
-
-class $modify(ModGJItemIcon, GJItemIcon) {
-    void changeToLockedState(float);
 };
 
 class $modify(ModGJGarageLayer, GJGarageLayer) {
