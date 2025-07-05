@@ -1,3 +1,8 @@
+## 1.0.8
+
+- Fixed icons briefly appearing gray when changing pages in the icon kit with [controllable](mod:undefined0.controllable)
+- Bumped Geode version to support JIT-less iOS
+
 ## 1.0.7
 
 - Added iOS support
