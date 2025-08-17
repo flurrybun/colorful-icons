@@ -248,6 +248,23 @@ CCSprite* ModSimplePlayer::renderIcon(bool isUnobtainable) {
 
 void ModGJGarageLayer::playerColorChanged() {
     GJGarageLayer::playerColorChanged();
+    if (ListButtonBar* moreIconsBar = static_cast<ListButtonBar*>(getChildByID("hiimjustin000.more_icons/icon-selection-bar"))) {
+        if (ListButtonPage* page = typeinfo_cast<ListButtonPage*>(moreIconsBar->m_pages->firstObject())) {
+            if (CCMenu* pageMenu = page->getChildByType<CCMenu>(0)) {
+                CCArrayExt<CCMenuItemSpriteExtra*> iconBtns = pageMenu->getChildren();
+                for (auto& iconBtn : iconBtns) {
+                    auto itemIcon = iconBtn->getChildByType<GJItemIcon>(0);
+                    if (!itemIcon) continue;
+
+                    // m_player may be a CCSprite*, e.g. trail icons
+                    auto player = itemIcon->m_player;
+                    if (!player || !typeinfo_cast<SimplePlayer*>(itemIcon->m_player)) continue;
+
+                    static_cast<ModSimplePlayer*>(player)->changeToPlayerColors();
+                }
+            }
+        }
+    }
 
     // most of these null checks are almost certainly unnecessary, but better safe than sorry
 
@@ -269,6 +286,8 @@ void ModGJGarageLayer::playerColorChanged() {
 
         static_cast<ModSimplePlayer*>(player)->changeToPlayerColors();
     }
+
+
 }
 
 bool ModGJGarageLayer::init() {
