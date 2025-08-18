@@ -248,27 +248,15 @@ CCSprite* ModSimplePlayer::renderIcon(bool isUnobtainable) {
 
 void ModGJGarageLayer::playerColorChanged() {
     GJGarageLayer::playerColorChanged();
-    if (ListButtonBar* moreIconsBar = static_cast<ListButtonBar*>(getChildByID("hiimjustin000.more_icons/icon-selection-bar"))) {
-        if (ListButtonPage* page = typeinfo_cast<ListButtonPage*>(moreIconsBar->m_pages->firstObject())) {
-            if (CCMenu* pageMenu = page->getChildByType<CCMenu>(0)) {
-                CCArrayExt<CCMenuItemSpriteExtra*> iconBtns = pageMenu->getChildren();
-                for (auto& iconBtn : iconBtns) {
-                    auto itemIcon = iconBtn->getChildByType<GJItemIcon>(0);
-                    if (!itemIcon) continue;
 
-                    // m_player may be a CCSprite*, e.g. trail icons
-                    auto player = itemIcon->m_player;
-                    if (!player || !typeinfo_cast<SimplePlayer*>(itemIcon->m_player)) continue;
+    updateButtonBar(m_iconSelection);
+    updateButtonBar(typeinfo_cast<ListButtonBar*>(getChildByID("hiimjustin000.more_icons/icon-selection-bar")));
+}
 
-                    static_cast<ModSimplePlayer*>(player)->changeToPlayerColors();
-                }
-            }
-        }
-    }
+void ModGJGarageLayer::updateButtonBar(ListButtonBar* buttonBar) {
+    if (!buttonBar) return;
 
-    // most of these null checks are almost certainly unnecessary, but better safe than sorry
-
-    auto page = typeinfo_cast<ListButtonPage*>(m_iconSelection->m_pages->firstObject());
+    auto page = typeinfo_cast<ListButtonPage*>(buttonBar->m_pages->firstObject());
     if (!page) return;
 
     auto pageMenu = page->getChildByType<CCMenu>(0);
@@ -286,8 +274,6 @@ void ModGJGarageLayer::playerColorChanged() {
 
         static_cast<ModSimplePlayer*>(player)->changeToPlayerColors();
     }
-
-
 }
 
 bool ModGJGarageLayer::init() {
