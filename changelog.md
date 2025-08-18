@@ -1,6 +1,10 @@
+## 1.0.9
+
+- Fixed pages added by [More Icons](mod:hiimjustin000.more_icons) not updating when changing player colors <c-9CA0AF>(thank you [NyteLyte](user:26352471)!)</c>
+
 ## 1.0.8
 
-- Fixed icons briefly appearing gray when changing pages in the icon kit with [controllable](mod:undefined0.controllable)
+- Fixed icons briefly appearing gray when changing pages in the icon kit with [Controllable](mod:undefined0.controllable)
 - Bumped Geode version to support JIT-less iOS
 
 ## 1.0.7
@@ -13,11 +17,11 @@
 
 ## 1.0.5
 
-- Fixed crash with [separate dual icons](mod:weebify.separate_dual_icons) when swapping players on the trail page
+- Fixed crash with [Separate Dual Icons](mod:weebify.separate_dual_icons) when swapping players on the trail page
 
 ## 1.0.4
 
-- Improved compatibility with [separate dual icons](mod:weebify.separate_dual_icons) so icons are colored to match the selected icon
+- Improved compatibility with [Separate Dual Icons](mod:weebify.separate_dual_icons) so icons are colored to match the selected icon
 
 ## 1.0.3
 
