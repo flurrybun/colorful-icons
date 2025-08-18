@@ -13,4 +13,4 @@ This mod can be built just like any other Geode mod. For more information, see t
 geode build
 ```
 
-Due to the `GJItemIcon::init` hook being really funky, this mod can't be built in debug mode—only release and release w/ debug info.
+Due to the `GJItemIcon::init` hook being really funky, this mod must be built using Clang in release w/ debug info.
