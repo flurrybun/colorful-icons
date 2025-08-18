@@ -40,6 +40,7 @@ class $modify(ModGJGarageLayer, GJGarageLayer) {
     };
     
     $override virtual void playerColorChanged();
+    void updateButtonBar(ListButtonBar*);
     $override virtual bool init();
     void updateSeparateDualIcons(float);
 };

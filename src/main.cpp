@@ -249,9 +249,14 @@ CCSprite* ModSimplePlayer::renderIcon(bool isUnobtainable) {
 void ModGJGarageLayer::playerColorChanged() {
     GJGarageLayer::playerColorChanged();
 
-    // most of these null checks are almost certainly unnecessary, but better safe than sorry
+    updateButtonBar(m_iconSelection);
+    updateButtonBar(typeinfo_cast<ListButtonBar*>(getChildByID("hiimjustin000.more_icons/icon-selection-bar")));
+}
 
-    auto page = typeinfo_cast<ListButtonPage*>(m_iconSelection->m_pages->firstObject());
+void ModGJGarageLayer::updateButtonBar(ListButtonBar* buttonBar) {
+    if (!buttonBar) return;
+
+    auto page = typeinfo_cast<ListButtonPage*>(buttonBar->m_pages->firstObject());
     if (!page) return;
 
     auto pageMenu = page->getChildByType<CCMenu>(0);
