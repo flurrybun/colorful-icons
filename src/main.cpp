@@ -1,7 +1,5 @@
 #include "main.hpp"
 #include "color.hpp"
-#include <random>
-#include <Geode/Geode.hpp>
 
 // trying to access the last parameter of GJItemIcon::init in any way crashes the game
 // genuinely how the fuck does that even happen
@@ -102,13 +100,9 @@ bool ModSimplePlayer::tryChangeSeparateDualIconsColor() {
 }
 
 void ModSimplePlayer::makeRainbow() {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distr(0, 360);
-
-    ccColor3B primary = color::hsv2rgb({static_cast<float>(distr(gen)), 1, 1});
-    ccColor3B secondary = color::hsv2rgb({static_cast<float>(distr(gen)), 1, 1});
-    ccColor3B glow = color::hsv2rgb({static_cast<float>(distr(gen)), 1, 1});
+    ccColor3B primary = color::hsv2rgb({random::generate(0.f, 360.f), 1.f, 1.f});
+    ccColor3B secondary = color::hsv2rgb({random::generate(0.f, 360.f), 1.f, 1.f});
+    ccColor3B glow = color::hsv2rgb({random::generate(0.f, 360.f), 1.f, 1.f});
     m_fields->m_rainbowPrimary = primary;
     m_fields->m_rainbowSecondary = secondary;
     m_fields->m_rainbowGlow = glow;
@@ -298,8 +292,8 @@ void ModGJGarageLayer::updateSeparateDualIcons(float dt) {
 }
 
 bool isAprilFools() {
-    time_t now = time(nullptr);
-    tm* time = localtime(&now);
+    std::time_t time = std::time(nullptr);
+    std::tm local = geode::localtime(time);
 
-    return time->tm_mon == 3 && time->tm_mday == 1;
+    return local.tm_mon == 3 && local.tm_mday == 1;
 }
