@@ -1,3 +1,7 @@
+## 1.0.10
+
+- Bumped to Geode v5 (2.2081)
+
 ## 1.0.9
 
 - Fixed pages added by [More Icons](mod:hiimjustin000.more_icons) not updating when changing player colors <c-9CA0AF>(thank you [NyteLyte](user:26352471)!)</c>
@@ -25,7 +29,7 @@
 
 ## 1.0.3
 
-- Bumped to Geode 4.0.0 and 2.2074
+- Bumped to Geode v4 (2.2074)
 - Fixed chest reward icons not being colored
 
 ## 1.0.2
