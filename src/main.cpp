@@ -66,7 +66,8 @@ void ModSimplePlayer::changeToPlayerColors() {
 
     ccColor3B primary = gm->colorForIdx(gm->getPlayerColor());
     ccColor3B secondary = gm->colorForIdx(gm->getPlayerColor2());
-    ccColor3B glow = gm->colorForIdx(gm->getPlayerGlowColor());
+    int glowidx = gm->getPlayerGlowColor();
+    ccColor3B glow = (glowidx == -1) ? secondary : gm->colorForIdx(glowidx);
     bool hasGlow = gm->getPlayerGlow();
 
     setColors(primary, secondary);
@@ -89,7 +90,8 @@ bool ModSimplePlayer::tryChangeSeparateDualIconsColor() {
 
     ccColor3B primary = gm->colorForIdx(mod->getSavedValue<int64_t>("color1"));
     ccColor3B secondary = gm->colorForIdx(mod->getSavedValue<int64_t>("color2"));
-    ccColor3B glow = gm->colorForIdx(mod->getSavedValue<int64_t>("colorglow"));
+    int glowidx = mod->getSavedValue<int64_t>("colorglow");
+    ccColor3B glow = (glowidx == -1) ? secondary : gm->colorForIdx(glowidx);
     bool hasGlow = mod->getSavedValue<bool>("glow");
 
     setColors(primary, secondary);
