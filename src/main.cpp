@@ -142,12 +142,8 @@ void ModSimplePlayer::tintToRandomColor(ColorType colorType, float duration) {
         baseColor = m_fields->m_rainbowGlow;
     }
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distr(-30, 30);
-
     ccHSVValue hsv = color::rgb2hsv(baseColor);
-    hsv.h += distr(gen);
+    hsv.h += random::generate(-30.f, 30.f);
     hsv.s = 1;
     hsv.v = 1;
     ccColor3B color = color::hsv2rgb(hsv);
