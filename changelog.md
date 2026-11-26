@@ -1,6 +1,10 @@
+## 1.0.11
+
+- Updated to Geode v6 (2.2091)
+
 ## 1.0.10
 
-- Bumped to Geode v5 (2.2081)
+- Updated to Geode v5 (2.2081)
 
 ## 1.0.9
 
@@ -9,7 +13,7 @@
 ## 1.0.8
 
 - Fixed icons briefly appearing gray when changing pages in the icon kit with [Controllable](mod:undefined0.controllable)
-- Bumped Geode version to support JIT-less iOS
+- Updated Geode version to support JIT-less iOS
 
 ## 1.0.7
 
@@ -29,7 +33,7 @@
 
 ## 1.0.3
 
-- Bumped to Geode v4 (2.2074)
+- Updated to Geode v4 (2.2074)
 - Fixed chest reward icons not being colored
 
 ## 1.0.2
